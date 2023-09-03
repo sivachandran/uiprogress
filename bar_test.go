@@ -35,3 +35,17 @@ func TestBarIncr(t *testing.T) {
 		t.Fatal("need", 10000, "got", b.Current())
 	}
 }
+
+func TestBarSet(t *testing.T) {
+	b := NewBar(4)
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	timeStarted := b.TimeElapsed()
+	for i := 0; i < 4; i++ {
+		b.Set(i)
+		time.Sleep(time.Millisecond * 100)
+	}
+	if !(b.TimeElapsed() > timeStarted) {
+		t.Fatal("time elapsed not updated")
+	}
+}
